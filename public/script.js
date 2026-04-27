@@ -108,11 +108,6 @@ const SERVICES = [
         text: 'HDMI, power, disc drive, overheating, and controller repairs for major console brands.'
     },
     {
-        icon: '📺',
-        title: 'TV & Monitor',
-        text: 'Power, backlight, and board-level repairs where cost-effective for your display.'
-    },
-    {
         icon: '🔧',
         title: 'Other Electronics',
         text: 'Small electronics and accessories — ask us if we can fix it before you replace it.'
