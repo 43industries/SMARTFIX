@@ -13,7 +13,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -158,11 +157,9 @@
                 <p class="section-subtitle">Have a question? Send us a message and we'll get back to you</p>
             </div>
             <div class="contact-form-wrapper">
-                <form class="contact-form" id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                    <!-- Hidden field for Netlify spam protection -->
-                    <input type="hidden" name="form-name" value="contact">
-                    <p style="display: none;">
-                        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+                <form class="contact-form" id="contactForm" name="contact" method="POST" action="#">
+                    <p class="form-honeypot" aria-hidden="true">
+                        <label>Company: <input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
                     </p>
                     <div class="form-group">
                         <label for="name">Name *</label>
@@ -231,17 +228,6 @@
         </div>
     </footer>
 
-    <script>
-        if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/admin/";
-                    });
-                }
-            });
-        }
-    </script>
     <script src="script.js"></script>
 </body>
 </html>

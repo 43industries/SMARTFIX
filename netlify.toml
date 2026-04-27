@@ -1,3 +1,0 @@
-# Static site — publish the repo root (index.html, styles.css, script.js)
-[build]
-  publish = "."

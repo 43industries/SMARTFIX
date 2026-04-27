@@ -47,7 +47,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Contact Form Handling with Netlify Forms
+// Contact form (FormSubmit — works on any static host including Vercel)
+const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/smartfixmarshalltx@gmail.com';
+
 const contactForm = document.getElementById('contactForm');
 const formMessage = document.getElementById('formMessage');
 
@@ -55,6 +57,10 @@ contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const formData = new FormData(contactForm);
+    if (formData.get('company')) {
+        return;
+    }
+
     const data = {
         name: formData.get('name'),
         email: formData.get('email'),
@@ -80,19 +86,28 @@ contactForm.addEventListener('submit', async (e) => {
     submitButton.disabled = true;
 
     try {
-        formData.append('form-name', 'contact');
-
-        const response = await fetch('/', {
+        const response = await fetch(FORMSUBMIT_ENDPOINT, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams(formData).toString()
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({
+                name: data.name,
+                email: data.email,
+                phone: data.phone || '',
+                service: data.service || '',
+                message: data.message,
+                _subject: 'SmartFix Marshall — Website contact'
+            })
         });
 
-        if (response.ok) {
+        const result = await response.json().catch(() => null);
+        if (response.ok && result && result.success) {
             showFormMessage('Thank you! Your message has been sent. We will get back to you soon.', 'success');
             contactForm.reset();
         } else {
-            throw new Error('Form submission failed');
+            throw new Error((result && result.message) || 'Form submission failed');
         }
     } catch (error) {
         showFormMessage('Sorry, there was an error sending your message. Please try again or call us directly at (903) 578-7629.', 'error');
