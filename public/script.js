@@ -85,70 +85,178 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Services & about features (populates sections — was empty on all screen sizes)
-const SERVICES = [
-    {
-        icon: '📱',
-        title: 'Phone Repair',
-        text: 'Screens, batteries, charging ports, water damage, and more for iPhone, Android, and other smartphones.'
+// Site content (defaults used if API unavailable)
+const DEFAULT_CONTENT = {
+    hero: {
+        title: 'Professional Electronics Repair in Marshall, Texas',
+        subtitle: 'Expert repair for phones, tablets, laptops, gaming consoles, and all your electronic devices'
     },
-    {
-        icon: '💻',
-        title: 'Laptop & Computer',
-        text: 'Diagnostics, SSD upgrades, keyboard replacements, cooling issues, and software troubleshooting.'
+    services: {
+        title: 'Our Electronics Repair Services',
+        subtitle: 'Expert repair for all your electronic devices',
+        items: [
+            { icon: '📱', title: 'Phone Repair', text: 'Screens, batteries, charging ports, water damage, and more for iPhone, Android, and other smartphones.' },
+            { icon: '💻', title: 'Laptop & Computer', text: 'Diagnostics, SSD upgrades, keyboard replacements, cooling issues, and software troubleshooting.' },
+            { icon: '📲', title: 'Tablet Repair', text: 'Glass, displays, batteries, and connectors for iPad and Android tablets.' },
+            { icon: '🎮', title: 'Gaming Consoles', text: 'HDMI, power, disc drive, overheating, and controller repairs for major console brands.' },
+            { icon: '🔧', title: 'Other Electronics', text: 'Small electronics and accessories — ask us if we can fix it before you replace it.' }
+        ]
     },
-    {
-        icon: '📲',
-        title: 'Tablet Repair',
-        text: 'Glass, displays, batteries, and connectors for iPad and Android tablets.'
+    about: {
+        title: 'About SmartFix Marshall',
+        paragraph1: 'SmartFix Marshall is your trusted electronics repair specialist in Marshall, Texas. We specialize in repairing phones, tablets, laptops, gaming consoles, and all electronic devices.',
+        paragraph2: 'With years of experience and expertise in electronics repair, we provide fast, reliable, and affordable repair services. Our skilled technicians use quality parts and professional tools to get your devices working like new again.',
+        features: [
+            'Free diagnostic estimates on most repairs',
+            'Quality parts and professional tools',
+            'Fast turnaround on common repairs',
+            'Honest recommendations — repair vs. replace'
+        ]
     },
-    {
-        icon: '🎮',
-        title: 'Gaming Consoles',
-        text: 'HDMI, power, disc drive, overheating, and controller repairs for major console brands.'
+    contact: {
+        phone: '(903) 578-7629',
+        phoneTel: '+19035787629',
+        email: 'smartfixmarshalltx@gmail.com',
+        address: '1111B E Grand Avenue\nMarshall, TX 75670',
+        hours: 'Mon: 9AM - 6PM\nTue: 9AM - 6PM\nWed: 9AM - 6PM\nThu: 9AM - 6PM\nFri: 9AM - 6PM\nSat: 10AM - 4PM\nSun: Closed'
     },
-    {
-        icon: '🔧',
-        title: 'Other Electronics',
-        text: 'Small electronics and accessories — ask us if we can fix it before you replace it.'
+    quote: {
+        title: 'Get a Free Quote',
+        subtitle: 'Fill out the form below to get an instant quote for your electronics repair'
+    },
+    footer: {
+        description: 'Your trusted electronics repair specialist in Marshall, Texas. Expert repair for phones, tablets, laptops, gaming consoles, and all electronic devices.'
     }
-];
+};
 
-const FEATURES = [
-    'Free diagnostic estimates on most repairs',
-    'Quality parts and professional tools',
-    'Fast turnaround on common repairs',
-    'Honest recommendations — repair vs. replace'
-];
+function setMultilineText(el, text) {
+    if (!el) return;
+    el.textContent = '';
+    const lines = String(text || '').split('\n');
+    lines.forEach((line, index) => {
+        if (index > 0) {
+            el.appendChild(document.createElement('br'));
+        }
+        el.appendChild(document.createTextNode(line));
+    });
+}
 
-function renderServices() {
+function renderServices(items) {
     const grid = document.getElementById('services-grid');
     if (!grid) return;
-    grid.innerHTML = SERVICES.map(
-        (s) =>
-            `<article class="service-card">
-                <div class="service-icon" aria-hidden="true">${s.icon}</div>
-                <h3>${s.title}</h3>
-                <p>${s.text}</p>
-            </article>`
-    ).join('');
+    grid.innerHTML = '';
+    items.forEach((service) => {
+        const article = document.createElement('article');
+        article.className = 'service-card';
+
+        const icon = document.createElement('div');
+        icon.className = 'service-icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.textContent = service.icon || '';
+
+        const title = document.createElement('h3');
+        title.textContent = service.title || '';
+
+        const text = document.createElement('p');
+        text.textContent = service.text || '';
+
+        article.appendChild(icon);
+        article.appendChild(title);
+        article.appendChild(text);
+        grid.appendChild(article);
+    });
 }
 
-function renderFeatures() {
+function renderFeatures(features) {
     const list = document.getElementById('features-list');
     if (!list) return;
-    list.innerHTML = FEATURES.map(
-        (f) =>
-            `<div class="feature-item">
-                <span class="check-icon" aria-hidden="true">✓</span>
-                <span>${f}</span>
-            </div>`
-    ).join('');
+    list.innerHTML = '';
+    features.forEach((feature) => {
+        const item = document.createElement('div');
+        item.className = 'feature-item';
+
+        const check = document.createElement('span');
+        check.className = 'check-icon';
+        check.setAttribute('aria-hidden', 'true');
+        check.textContent = '✓';
+
+        const label = document.createElement('span');
+        label.textContent = feature;
+
+        item.appendChild(check);
+        item.appendChild(label);
+        list.appendChild(item);
+    });
 }
 
-// Contact form (FormSubmit — works on any static host including Vercel)
-const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/smartfixmarshalltx@gmail.com';
+function applySiteContent(content) {
+    const c = content || DEFAULT_CONTENT;
 
+    const heroTitle = document.getElementById('hero-title');
+    const heroSubtitle = document.getElementById('hero-subtitle');
+    if (heroTitle) heroTitle.textContent = c.hero.title;
+    if (heroSubtitle) heroSubtitle.textContent = c.hero.subtitle;
+
+    const servicesTitle = document.getElementById('services-title');
+    const servicesSubtitle = document.getElementById('services-subtitle');
+    if (servicesTitle) servicesTitle.textContent = c.services.title;
+    if (servicesSubtitle) servicesSubtitle.textContent = c.services.subtitle;
+    renderServices(c.services.items);
+
+    const aboutTitle = document.getElementById('about-title');
+    const aboutP1 = document.getElementById('about-paragraph1');
+    const aboutP2 = document.getElementById('about-paragraph2');
+    if (aboutTitle) aboutTitle.textContent = c.about.title;
+    if (aboutP1) aboutP1.textContent = c.about.paragraph1;
+    if (aboutP2) aboutP2.textContent = c.about.paragraph2;
+    renderFeatures(c.about.features);
+
+    const phoneLink = document.getElementById('contact-phone-link');
+    if (phoneLink) {
+        phoneLink.textContent = c.contact.phone;
+        phoneLink.href = `tel:${c.contact.phoneTel || c.contact.phone}`;
+    }
+
+    const emailLink = document.getElementById('contact-email-link');
+    if (emailLink) {
+        emailLink.textContent = c.contact.email;
+        emailLink.href = `mailto:${c.contact.email}`;
+    }
+
+    setMultilineText(document.getElementById('contact-address'), c.contact.address);
+    setMultilineText(document.getElementById('contact-hours'), c.contact.hours);
+
+    const quoteTitle = document.getElementById('quote-title');
+    const quoteSubtitle = document.getElementById('quote-subtitle');
+    if (quoteTitle) quoteTitle.textContent = c.quote.title;
+    if (quoteSubtitle) quoteSubtitle.textContent = c.quote.subtitle;
+
+    const footerDesc = document.getElementById('footer-description');
+    if (footerDesc) footerDesc.textContent = c.footer.description;
+
+    const footerPhone = document.getElementById('footer-phone');
+    const footerEmail = document.getElementById('footer-email');
+    const footerAddress = document.getElementById('footer-address');
+    if (footerPhone) footerPhone.textContent = `Phone: ${c.contact.phone}`;
+    if (footerEmail) footerEmail.textContent = `Email: ${c.contact.email}`;
+    if (footerAddress) footerAddress.textContent = c.contact.address.replace('\n', ', ');
+}
+
+async function loadSiteContent() {
+    try {
+        const response = await fetch('/api/content');
+        if (response.ok) {
+            const content = await response.json();
+            applySiteContent(content);
+            return;
+        }
+    } catch (error) {
+        console.warn('Using default site content:', error);
+    }
+    applySiteContent(DEFAULT_CONTENT);
+}
+
+// Contact form
 const contactForm = document.getElementById('contactForm');
 const formMessage = document.getElementById('formMessage');
 
@@ -185,28 +293,18 @@ contactForm.addEventListener('submit', async (e) => {
     submitButton.disabled = true;
 
     try {
-        const response = await fetch(FORMSUBMIT_ENDPOINT, {
+        const response = await fetch('/api/contact', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json'
-            },
-            body: JSON.stringify({
-                name: data.name,
-                email: data.email,
-                phone: data.phone || '',
-                service: data.service || '',
-                message: data.message,
-                _subject: 'SmartFix Marshall — Website contact'
-            })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
         });
 
-        const result = await response.json().catch(() => null);
-        if (response.ok && result && result.success) {
+        const result = await response.json().catch(() => ({}));
+        if (response.ok && result.success) {
             showFormMessage('Thank you! Your message has been sent. We will get back to you soon.', 'success');
             contactForm.reset();
         } else {
-            throw new Error((result && result.message) || 'Form submission failed');
+            throw new Error(result.error || 'Form submission failed');
         }
     } catch (error) {
         showFormMessage('Sorry, there was an error sending your message. Please try again or call us directly at (903) 578-7629.', 'error');
@@ -286,9 +384,13 @@ window.addEventListener('scroll', () => {
 });
 
 // Error handling for images
-document.addEventListener('DOMContentLoaded', () => {
-    renderServices();
-    renderFeatures();
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadSiteContent();
+
+    const yearEl = document.getElementById('copyright-year');
+    if (yearEl) {
+        yearEl.textContent = String(new Date().getFullYear());
+    }
 
     const images = document.querySelectorAll('img');
     images.forEach(img => {

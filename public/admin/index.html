@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartFix Admin</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <h1>SmartFix <span class="accent">Admin</span></h1>
+            <p class="login-subtitle">Sign in to manage site content and messages</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" name="password" required autocomplete="current-password">
+                </div>
+                <p id="loginError" class="form-error" hidden></p>
+                <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            </form>
+            <p class="login-footer"><a href="/">Back to website</a></p>
+        </div>
+    </div>
+
+    <div id="dashboard" class="dashboard" hidden>
+        <header class="admin-header">
+            <div class="admin-header-inner">
+                <h1>SmartFix <span class="accent">Admin</span></h1>
+                <div class="admin-header-actions">
+                    <a href="/" class="btn btn-secondary btn-sm" target="_blank" rel="noopener">View site</a>
+                    <button type="button" id="logoutBtn" class="btn btn-secondary btn-sm">Log out</button>
+                </div>
+            </div>
+        </header>
+
+        <nav class="admin-tabs" role="tablist">
+            <button type="button" class="admin-tab active" data-tab="content" role="tab" aria-selected="true">Content</button>
+            <button type="button" class="admin-tab" data-tab="messages" role="tab" aria-selected="false">Messages</button>
+        </nav>
+
+        <main class="admin-main">
+            <section id="contentPanel" class="admin-panel" role="tabpanel">
+                <form id="contentForm">
+                    <fieldset class="admin-section">
+                        <legend>Hero</legend>
+                        <div class="form-group">
+                            <label for="heroTitle">Title</label>
+                            <input type="text" id="heroTitle" name="heroTitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="heroSubtitle">Subtitle</label>
+                            <textarea id="heroSubtitle" name="heroSubtitle" rows="2"></textarea>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="admin-section">
+                        <legend>Services section</legend>
+                        <div class="form-group">
+                            <label for="servicesTitle">Section title</label>
+                            <input type="text" id="servicesTitle" name="servicesTitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="servicesSubtitle">Section subtitle</label>
+                            <input type="text" id="servicesSubtitle" name="servicesSubtitle">
+                        </div>
+                        <div id="servicesEditor" class="services-editor"></div>
+                        <button type="button" id="addServiceBtn" class="btn btn-secondary btn-sm">Add service</button>
+                    </fieldset>
+
+                    <fieldset class="admin-section">
+                        <legend>About</legend>
+                        <div class="form-group">
+                            <label for="aboutTitle">Title</label>
+                            <input type="text" id="aboutTitle" name="aboutTitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="aboutParagraph1">Paragraph 1</label>
+                            <textarea id="aboutParagraph1" name="aboutParagraph1" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="aboutParagraph2">Paragraph 2</label>
+                            <textarea id="aboutParagraph2" name="aboutParagraph2" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Feature bullets (one per line)</label>
+                            <textarea id="aboutFeatures" name="aboutFeatures" rows="4"></textarea>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="admin-section">
+                        <legend>Contact info</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactPhone">Phone (display)</label>
+                                <input type="text" id="contactPhone" name="contactPhone">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPhoneTel">Phone (tel link, e.g. +19035787629)</label>
+                                <input type="text" id="contactPhoneTel" name="contactPhoneTel">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email</label>
+                            <input type="email" id="contactEmail" name="contactEmail">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactAddress">Address (one line per row)</label>
+                            <textarea id="contactAddress" name="contactAddress" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactHours">Hours (one line per day)</label>
+                            <textarea id="contactHours" name="contactHours" rows="7"></textarea>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="admin-section">
+                        <legend>Quote section</legend>
+                        <div class="form-group">
+                            <label for="quoteTitle">Title</label>
+                            <input type="text" id="quoteTitle" name="quoteTitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="quoteSubtitle">Subtitle</label>
+                            <input type="text" id="quoteSubtitle" name="quoteSubtitle">
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="admin-section">
+                        <legend>Footer</legend>
+                        <div class="form-group">
+                            <label for="footerDescription">Description</label>
+                            <textarea id="footerDescription" name="footerDescription" rows="3"></textarea>
+                        </div>
+                    </fieldset>
+
+                    <p id="contentStatus" class="form-status" hidden></p>
+                    <button type="submit" class="btn btn-primary">Save content</button>
+                </form>
+            </section>
+
+            <section id="messagesPanel" class="admin-panel" hidden role="tabpanel">
+                <div class="messages-toolbar">
+                    <h2>Contact messages</h2>
+                    <button type="button" id="refreshMessagesBtn" class="btn btn-secondary btn-sm">Refresh</button>
+                </div>
+                <p id="messagesStatus" class="form-status" hidden></p>
+                <div id="messagesList" class="messages-list"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
